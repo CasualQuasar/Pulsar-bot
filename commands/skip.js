@@ -5,18 +5,20 @@ const misc = require('../botMisc.js')
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('skip')
-		.setDescription('Skips to the next track if there is one.'),
+		.setDescription('Skips to the next track if there is one.')
+    .addIntegerOption((option) => option.setName('count').setDescription('Number of songs to skip')),
 	async execute(interaction) {
 		await interaction.deferReply();
         if (await misc.initializeCommand(interaction)) {return};
 
+    const skipCount = interaction.options.getInteger('count');
 		let client = interaction.client;
     let voiceInfo = client.queue.get(interaction.guildId)
 		let player = voiceInfo.voice.player;
     // let currentTrack = voiceInfo.queueInfo.currentTrack
 		
-    if(voiceInfo.queue[voiceInfo.queueInfo.currentTrack + 1]) {
-      voiceInfo.queueInfo.currentTrack++;
+    if(voiceInfo.queue[voiceInfo.queueInfo.currentTrack + (skipCount) ? skipCount : 1]) {
+      voiceInfo.queueInfo.currentTrack += (skipCount) ? skipCount : 1;
 
       let musicOut = await voiceInfo.queue[voiceInfo.queueInfo.currentTrack];
       let musicFile = `[${musicOut.display_id}]-${musicOut.epoch}.opus`

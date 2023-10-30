@@ -11,7 +11,8 @@ module.exports = {
         if (await misc.initializeCommand(interaction)) {return};
 
         let client = interaction.client;
-        let page = interaction.options.getInteger('page');
+        let page = interaction.options.getInteger('page'); 
+        console.log("page: " + page)           
 
         if(!client.queue.get(interaction.guildId))
         {
@@ -52,10 +53,17 @@ async function makeQueue(client, interaction, page)
     let start = 0;
     let queueString = "";
 
-    if(client.queue.get(interaction.guildId).queue.length < 16 || !page || page == 1)
+    console.log(page)
+
+    if(!page) {
+        start = ((currentTrack <= 15) ? 0 : Math.floor(currentTrack / 15)) * 15;
+    }
+    else if(client.queue.get(interaction.guildId).queue.length < 16 || page <= 1)
         start = 0;
     else
         start = (page - 1) * 15;
+
+    console.log(start)
 
     for(let i = start; i < start + Math.min(15, client.queue.get(interaction.guildId).queue.length - start); i++)
     {

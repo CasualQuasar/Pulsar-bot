@@ -8,6 +8,8 @@ const success = chalk.green;
 const chalkWarning = chalk.hex('#FFA500');
 const chalkError = chalk.bold.red;
 
+const blockedUsers = ["546743840107790347"]
+
 module.exports = {
     dimmed,
     success,
@@ -97,7 +99,7 @@ function verify(interaction) {
     const promise = new Promise((resolve, reject) => {
         
         client = interaction.client;
-            
+
         if(!interaction.member.voice.channelId) {
             interaction.editReply({
                 "embeds": [
@@ -110,7 +112,19 @@ function verify(interaction) {
                 ]
             });
             resolve(true);
-        } else if (!client.queue.get(interaction.guildId).voice.voiceChannelId){
+        } else if (blockedUsers.includes(interaction.user.id)) {
+            interaction.editReply({
+                "embeds": [
+                    {
+                        "type": "rich",
+                        "title": "Error",
+                        "description": "This bot cannot be used to play music by you! (bitch)",
+                        "color": 0xe67c00,
+                    },
+                ]
+            });
+            resolve(true);
+        } else if (!client.queue.get(interaction.guildId).voice.voiceChannelId) {
             interaction.editReply({
                 "embeds": [
                     {
@@ -155,6 +169,18 @@ function verifyPlay(interaction) {
                 ]
             });
 
+            resolve(true);
+        } else if (blockedUsers.includes(interaction.user.id)) {
+            interaction.editReply({
+                "embeds": [
+                    {
+                        "type": "rich",
+                        "title": "Error",
+                        "description": "This bot cannot be used to play music by you! (bitch)",
+                        "color": 0xe67c00,
+                    },
+                ]
+            });
             resolve(true);
         } else resolve(false);
     });

@@ -187,7 +187,22 @@ module.exports = {
                         manageTrack(interaction, musicOut);
                     }); 
                 }
-            });
+            })
+            .catch((error) => {
+                console.log(error)
+                client.queue.delete(guildId);
+                interaction.editReply({
+                    "embeds": [
+                        {
+                            "type": "rich",
+                            "title": `Error`,
+                            "description": error.message,
+                            "color": 0xe67c00,
+                        },
+                    ]
+                })
+                return;
+            })
         }
         else
         {
@@ -223,7 +238,7 @@ function identifyQueryType(input)
         }
         else if(input.match(ytrx)[0] == 'https://www.youtube.com' || input.match(ytrx)[0] == 'https://youtu.be')
         {
-            if(input.match("https://www.youtube.com/playlist") == 'https://www.youtube.com/playlist')
+            if(input.match("https://www.youtube.com/playlist") == 'https://www.youtube.com/playlist' || input.match("&list=") == '&list=')
                 return(["yt-p"]);
             else
                 return(["yt"]);
@@ -448,6 +463,7 @@ function playFirstTrack(interaction) {
         if(voiceInfo.queue[currentTrack + 1] || loop == 2) {
             if(loop == 0 || loop == 1 )
                 voiceInfo.queueInfo.currentTrack++;
+            currentTrack = voiceInfo.queueInfo.currentTrack
             let musicOut = await voiceInfo.queue[currentTrack];
             let musicFile = `[${musicOut.display_id}]-${musicOut.epoch}.opus`
             let resource = createAudioResource(`bin/${guildId}/ytdl/${musicFile}`);

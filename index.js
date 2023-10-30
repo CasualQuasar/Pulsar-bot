@@ -5,7 +5,7 @@ const misc = require('./botMisc.js')
 const chalk = require('chalk');
 
 // Create a new client instance and declare intents
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 
 //Create a collection to hold all of the information for every
 //guild and its queue
