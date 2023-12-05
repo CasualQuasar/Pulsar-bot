@@ -8,12 +8,12 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('shuffle')
 		.setDescription('Shuffles the queue in a random order.')
-    .addBooleanOption((option) => option.setName('skip').setDescription('Should skip to the next song or continue playing?')),
+        .addBooleanOption((option) => option.setName('skip').setDescription('Should skip to the next song or continue playing?')),
 	async execute(interaction) {
 		await interaction.deferReply();
         if (await misc.initializeCommand(interaction)) {return};
 
-        const shouldSkip = interaction.options.getInteger('skip');
+        const shouldSkip = interaction.options.getBoolean('skip');
         let client = interaction.client;
         let voiceInfo = client.queue.get(interaction.guildId)
         let player = voiceInfo.voice.player;
