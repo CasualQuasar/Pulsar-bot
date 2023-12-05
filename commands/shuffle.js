@@ -17,20 +17,18 @@ module.exports = {
     let player = voiceInfo.voice.player;
 		
 
-    //shuffle
     let currentIndex = voiceInfo.queueInfo.currentTrack;
-    let shuffledQueue = voiceInfo.queue;
-    let temp;
-    let randomIndex;
-    while (currentIndex != 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
+    let shuffledQueue = [voiceInfo.queue[currentIndex]]; // Set the first song as the current track
+    let remainingSongs = voiceInfo.queue.slice(0, currentIndex).concat(voiceInfo.queue.slice(currentIndex + 1)); // Get the remaining songs
 
-      temp = shuffledQueue[currentIndex];
-      shuffledQueue[currentIndex] = shuffledQueue[randomIndex];
-      shuffledQueue[randomIndex] = temp;
+    // Shuffle the remaining songs
+    for (let i = remainingSongs.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [remainingSongs[i], remainingSongs[randomIndex]] = [remainingSongs[randomIndex], remainingSongs[i]];
     }
-    voiceInfo.queue = shuffledQueue;
+
+    shuffledQueue = shuffledQueue.concat(remainingSongs); // Combine the first song and the shuffled remaining songs
+    voiceInfo.queue = shuffledQueue; // Update the queue with the shuffled songs
 
 
     //skip if necessary
