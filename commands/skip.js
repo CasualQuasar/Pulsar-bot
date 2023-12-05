@@ -17,7 +17,7 @@ module.exports = {
 		let player = voiceInfo.voice.player;
     // let currentTrack = voiceInfo.queueInfo.currentTrack
 		
-    if(voiceInfo.queue[voiceInfo.queueInfo.currentTrack + (skipCount) ? skipCount : 1]) {
+    if(voiceInfo.queue[voiceInfo.queueInfo.currentTrack + ((skipCount) ? skipCount : 1)]) {
       voiceInfo.queueInfo.currentTrack += (skipCount) ? skipCount : 1;
 
       let musicOut = await voiceInfo.queue[voiceInfo.queueInfo.currentTrack];

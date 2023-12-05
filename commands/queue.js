@@ -12,8 +12,7 @@ module.exports = {
 
         let client = interaction.client;
         let page = interaction.options.getInteger('page'); 
-        console.log("page: " + page)           
-
+ 
         if(!client.queue.get(interaction.guildId))
         {
             await interaction.editReply({
@@ -53,8 +52,6 @@ async function makeQueue(client, interaction, page)
     let start = 0;
     let queueString = "";
 
-    console.log(page)
-
     if(!page) {
         start = ((currentTrack <= 15) ? 0 : Math.floor(currentTrack / 15)) * 15;
     }
@@ -62,8 +59,6 @@ async function makeQueue(client, interaction, page)
         start = 0;
     else
         start = (page - 1) * 15;
-
-    console.log(start)
 
     for(let i = start; i < start + Math.min(15, client.queue.get(interaction.guildId).queue.length - start); i++)
     {
